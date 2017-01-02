@@ -1,0 +1,57 @@
+{
+  "name": "pure-assign",
+  "version": "0.1.0",
+  "description": "Drop-in replacement for Object.assign() for \"updating\" immutable objects.",
+  "main": "dist/index.js",
+  "types": "dist/index",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc",
+    "buildDocs": "typedoc --out docs --mode file --name 'Simple Geomath' --readme none --module commonjs --target es5 --theme minimal --excludePrivate",
+    "jest": "jest",
+    "jest-watch": "npm run jest -- --watch",
+    "lint": "tslint --project .",
+    "prepublish": "npm run build",
+    "test": "npm run lint && npm run jest",
+    "watch": "npm run clean && tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dphilipson/pure-assign.git"
+  },
+  "keywords": [
+    "object",
+    "assign",
+    "immutable",
+    "update"
+  ],
+  "author": "David Philipson <dphilipson@gmail.com> (http://dphil.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dphilipson/pure-assign/issues"
+  },
+  "homepage": "https://github.com/dphilipson/pure-assign#readme",
+  "devDependencies": {
+    "@types/jest": "^16.0.3",
+    "jest": "^18.1.0",
+    "ts-jest": "^18.0.1",
+    "tslint": "^4.2.0",
+    "typedoc": "^0.5.3",
+    "typedoc-default-themes": "0.4.0",
+    "typescript": "^2.1.4"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  }
+}
