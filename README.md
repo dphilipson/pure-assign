@@ -7,6 +7,12 @@ object if no properties change.
 
 [![Build Status](https://travis-ci.org/dphilipson/pure-assign.svg?branch=master)](https://travis-ci.org/dphilipson/pure-assign)
 
+## Installation
+
+```
+npm install --save pure-assign
+```
+
 ## Motivation
 
 Many JavaScript programs treat objects as immutable data. For instance, this is recommended by
@@ -62,14 +68,5 @@ const userObject = { firstName: "Anastasia", lastName: "Steele" };
 const updatedUserObject = pureAssign(userObject, { firstNarm: "Ana" });
 // Type error because "firstNarm" is not a property of userObject.
 ```
-
-## Installation
-
-```
-npm install --save pure-assign
-```
-`pure-assign` makes calls to `Object.assign()`. If you need to run in an environment where
-`Object.assign()` is not available, you will need a polyfill, for instance
-[object.assign](https://github.com/ljharb/object.assign).
 
 Copyright © 2017 David Philipson
