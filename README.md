@@ -60,7 +60,7 @@ Note that unlike `Object.assign()`, the first argument of `{}` is absent.
 
 For TypeScript users, `pureAssign` has an additional advantage in that it catches type errors
 of the following form, which would be uncaught if using `Object.assign()` or object spread:
-```
+``` javascript
 import pureAssign from "pure-assign";
 
 const userObject = { firstName: "Anastasia", lastName: "Steele" };
