@@ -10,7 +10,6 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc",
-    "buildDocs": "typedoc --out docs --mode file --name 'Simple Geomath' --readme none --module commonjs --target es5 --theme minimal --excludePrivate",
     "jest": "jest",
     "jest-watch": "npm run jest -- --watch",
     "lint": "tslint --project .",
@@ -39,8 +38,6 @@
     "jest": "^18.1.0",
     "ts-jest": "^18.0.1",
     "tslint": "4.1.0",
-    "typedoc": "^0.5.3",
-    "typedoc-default-themes": "0.4.0",
     "typescript": "^2.1.4"
   },
   "jest": {
