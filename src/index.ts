@@ -9,7 +9,7 @@
  *          object would be identical to `baseObject`, then `baseObject` is returned.
  */
 export default function pureAssign<T>(baseObject: T, updates: Partial<T>): T {
-    for (let key in updates) {
+    for (const key in updates) {
         if (Object.prototype.hasOwnProperty.call(updates, key)
             && (!(key in baseObject)
                 || baseObject[key] !== updates[key])) {
