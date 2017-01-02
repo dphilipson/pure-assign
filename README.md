@@ -59,7 +59,7 @@ import pureAssign from "pure-assign";
 
 const userObject = { firstName: "Anastasia", lastName: "Steele" };
 
-const updatedUserObject = pureAssign(userObject, { firstNarm: "Ann" });
+const updatedUserObject = pureAssign(userObject, { firstNarm: "Ana" });
 // Type error because "firstNarm" is not a property of userObject.
 ```
 
