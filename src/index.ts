@@ -10,7 +10,7 @@
  */
 export default function pureAssign<T>(baseObject: T, updates: Partial<T>): T {
     for (let key in updates) {
-        if (key in baseObject && baseObject[key] !== updates[key]) {
+        if (!(key in baseObject) || baseObject[key] !== updates[key]) {
             return Object.assign({}, baseObject, updates);
         }
     }
