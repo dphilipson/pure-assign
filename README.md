@@ -43,8 +43,8 @@ updates are triggered by data "changes." For example, React developers may attem
 unnecessary re-renders by using
 [PureComponent](https://facebook.github.io/react/docs/react-api.html#react.purecomponent), which
 only performs an update if its props have "changed" according to a shallow-equality check. This means
-that if your updates create new objects with the same values, they will incorrectly re-render since
-the old props do not have object-equality with the new props.
+that if your updates create new objects with the same values, they will re-render unnecessarily since
+the old props do not have object-equality with the new props, despite having the same values.
 
 This is where `pureAssign()` comes in. `pureAssign(object, updates)` is equivalent to
 `Object.assign({}, object, updates)`, but will return the original object if nothing would be

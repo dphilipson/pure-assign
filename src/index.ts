@@ -13,7 +13,7 @@ export default function pureAssign<T>(baseObject: T, updates: Partial<T>): T {
         if (Object.prototype.hasOwnProperty.call(updates, key)
             && (!(key in baseObject)
                 || baseObject[key] !== updates[key])) {
-            return { ...(<any>baseObject), ...(<any>updates) };
+            return { ...(<any> baseObject), ...(<any> updates) };
         }
     }
     return baseObject;
