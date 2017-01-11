@@ -42,9 +42,10 @@ to the old ones. Beyond the minor performance impact, this can have greater cons
 updates are triggered by data "changes." For example, React developers may attempt to avoid
 unnecessary re-renders by using
 [PureComponent](https://facebook.github.io/react/docs/react-api.html#react.purecomponent), which
-only performs an update if its props have "changed" according to a shallow-equality check. This means
-that if your updates create new objects with the same values, they will re-render unnecessarily since
-the old props do not have object-equality with the new props, despite having the same values.
+only performs an update if its props have "changed" according to a shallow-equality check. This
+means that if your updates create new objects with the same values, they will trigger unnecessary
+re-renders since the old props do not have object-equality with the new props, despite having the
+same values.
 
 This is where `pureAssign()` comes in. `pureAssign(object, updates)` is equivalent to
 `Object.assign({}, object, updates)`, but will return the original object if nothing would be
@@ -58,6 +59,28 @@ console.log(userObject === updatedUserObject); // true
 ```
 Note that unlike `Object.assign()`, the first argument of `{}` is absent.
 
+Like `Object.assign()`, multiple update arguments may be given, where values found in later objects
+take precedence over earlier ones. A new object is returned only if the final result of applying
+all updates has different values from the original object. For example:
+``` javascript
+import pureAssign from "pure-assign";
+
+const userObject = { firstName: "Anastasia", lastName: "Steele" };
+
+const updatedUserObject1 = pureAssign(
+  userObject,
+  { firstName: "Christian", lastName: "Kavanagh" },
+  { firstName: "Kate" }
+);
+console.log(updatedUserObject1); // { firstName: "Kate", lastName: "Kavanagh" }
+
+const updatedUserObject2 = pureAssign(
+  userObject,
+  { firstName: "Ana", lastName: "Steele" },
+  { firstName: "Anastasia" }
+);
+console.log(userObject === updatedObject2); // true
+```
 For TypeScript users, `pureAssign` has an additional advantage in that it catches type errors
 of the following form, which would be uncaught if using `Object.assign()` or object spread:
 ``` javascript

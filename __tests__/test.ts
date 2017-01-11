@@ -36,6 +36,7 @@ describe("pureAssign()", () => {
         TestObject.prototype.c = 3;
         const actual = pureAssign({ a: 0, b: 0, c: 0 }, new TestObject());
         const expected = { a: 1, b: 2, c: 0 };
+        expect(actual).toEqual(expected);
     });
 
     it("should return the original if no updates are own properties", () => {
@@ -46,6 +47,25 @@ describe("pureAssign()", () => {
         TestObject.prototype.c = 3;
         const object = { a: 1, b: 2 };
         const result = pureAssign(object, new TestObject());
+        expect(result).toBe(object);
+    });
+
+    it("should return the same object if no second argument is given", () => {
+        const object = { a: 1, b: 2 };
+        const result = pureAssign(object);
+        expect(result).toBe(object);
+    });
+
+    it("should combine multiple update arguments", () => {
+        const object = { a: 1, b: 2 };
+        const actual = pureAssign(object, { a: 3 }, { b: 4 });
+        const expected = { a: 3, b: 4 };
+        expect(actual).toEqual(expected);
+    });
+
+    it("should return the same object if all values are the same after multiple arguments", () => {
+        const object = { a: 1, b: 2 };
+        const result = pureAssign(object, { a: 3 }, { a: 1, b: 2 });
         expect(result).toBe(object);
     });
 });
