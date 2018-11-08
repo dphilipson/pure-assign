@@ -2,94 +2,104 @@
 
 Drop-in replacement for
 [Object.assign()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
-for "updating" immutable objects. Unlike `Object.assign()`, `pureAssign()` will not create a new
-object if no properties change.
+for "updating" immutable objects. Unlike `Object.assign()`, `pureAssign()` will
+not create a new object if no properties change.
 
-[![Build Status](https://travis-ci.org/dphilipson/pure-assign.svg?branch=master)](https://travis-ci.org/dphilipson/pure-assign)
+[![Build
+Status](https://travis-ci.org/dphilipson/pure-assign.svg?branch=master)](https://travis-ci.org/dphilipson/pure-assign)
 
 ## Installation
 
+With Yarn:
+
 ```
-npm install --save pure-assign
+yarn add pure-assign
+```
+
+With NPM:
+
+```
+npm install pure-assign
+```
+
+## Usage
+
+`pureAssign` takes one or more arguments. The first argument is a base object,
+and the remaining arguments are any number of objects whose properties should be
+merged with those of the base object to produce a new object. Unlike
+[`Object.assign`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign),
+the first argument is not modified. For example:
+
+```ts
+import pureAssign from "pure-assign";
+
+const person = { firstName: "Anastasia", lastName: "Steele" };
+const updatedPerson = pureAssign(person, { firstName: "Ana" });
+console.log(person); // -> { firstName: "Anastasia", lastName: "Steele" }
+console.log(updatedPerson); // -> { firstName: "Ana", lastName: "Steele" }
+```
+
+If the resulting object would differ from the original, then a new object is
+created and returned. Otherwise, the original object is returned. That is,
+`pureAssign(object, ...updates)` is equivalent to `Object.assign({}, object, ...updates)`, except that the original instance is returned if no changes would
+be applied. For example:
+
+```ts
+const person = { firstName: "Anastasia", lastName: "Steele" };
+const updatedPerson = pureAssign(person, { firstName: "Anastasia" });
+console.log(person === updatedPerson); // -> true
+```
+
+For TypeScript users, `pureAssign` has an additional advantage in that it
+catches type errors of the following form, which would be uncaught if using
+`Object.assign()` or object spread:
+
+```javascript
+const person = { firstName: "Anastasia", lastName: "Steele" };
+const updatedPerson = pureAssign(userObject, { firstNarm: "Ana" });
+// Type error because "firstNarm" is not a property of userObject.
 ```
 
 ## Motivation
 
-Many JavaScript programs treat objects as immutable data. For instance, this is recommended by
-React and required by Redux. Such programs typically replace object mutation:
-``` javascript
-userObject.firstName = "Anastasia";
-userObject.lastName = "Steele";
+Many JavaScript programs treat objects as immutable data. For instance, this is
+recommended by React and required by Redux. Such programs typically replace
+object mutation:
+
+```javascript
+const user = { firstName: "Anastasia", lastName: "Steele" };
+user.firstName = "Ana";
 ```
+
 with calls to `Object.assign()`, creating a new object with the updated values:
-``` javascript
-const updatedUserObject = Object.assign({}, userObject, {
-  firstName: "Anastasia",
-  lastName: "Steele"
+
+```javascript
+const updatedUser = Object.assign({}, user, {
+    firstName: "Ana",
 });
 ```
-or alternatively with [ES7's spread operator](https://github.com/sebmarkbage/ecmascript-rest-spread)
-and an appropriate transpiler:
-``` javascript
-const updatedUserObject = {
-  ...userObject,
-  firstName: "Anastasia",
-  lastName: "Steele",
-};
+
+or alternatively with [ES7's spread
+operator](https://github.com/sebmarkbage/ecmascript-rest-spread) and an
+appropriate transpiler:
+
+```javascript
+const updatedUser = { ...user, firstName: "Ana" };
 ```
-A drawback of this approach is that a new object is created even if the new properties are identical
-to the old ones. Beyond the minor performance impact, this can have greater consequences if certain
-updates are triggered by data "changes." For example, React developers may attempt to avoid
-unnecessary re-renders by using
-[PureComponent](https://facebook.github.io/react/docs/react-api.html#react.purecomponent), which
-only performs an update if its props have "changed" according to a shallow-equality check. This
-means that if your updates create new objects with the same values, they will trigger unnecessary
-re-renders since the old props do not have object-equality with the new props, despite having the
-same values.
 
-This is where `pureAssign()` comes in. `pureAssign(object, updates)` is equivalent to
-`Object.assign({}, object, updates)`, but will return the original object if nothing would be
-changed. For instance:
-``` javascript
-import pureAssign from "pure-assign";
+A drawback of this approach is that a new object is created even if the new
+properties are identical to the old ones. This may have performance implications
+if certain updates are triggered by data "changes." For example, React
+developers may attempt to avoid unnecessary re-renders by using
+[PureComponent](https://facebook.github.io/react/docs/react-api.html#react.purecomponent),
+which only performs an update if its props have "changed" according to a
+shallow-equality check. This means that if your updates create new objects with
+the same values, they will trigger unnecessary rerenders since the old props do
+not have object-equality with the new props, despite being functionally
+identical.
 
-const userObject = { firstName: "Anastasia", lastName: "Steele" };
-const updatedUserObject = pureAssign(userObject, { firstName: "Anastasia" });
-console.log(userObject === updatedUserObject); // true
-```
-Note that unlike `Object.assign()`, the first argument of `{}` is absent.
-
-Like `Object.assign()`, multiple update arguments may be given, where values found in later objects
-take precedence over earlier ones. A new object is returned only if the final result of applying
-all updates has different values from the original object. For example:
-``` javascript
-import pureAssign from "pure-assign";
-
-const userObject = { firstName: "Anastasia", lastName: "Steele" };
-
-const updatedUserObject1 = pureAssign(
-  userObject,
-  { firstName: "Christian", lastName: "Kavanagh" },
-  { firstName: "Kate" }
-);
-console.log(updatedUserObject1); // { firstName: "Kate", lastName: "Kavanagh" }
-
-const updatedUserObject2 = pureAssign(
-  userObject,
-  { firstName: "Ana", lastName: "Steele" },
-  { firstName: "Anastasia" }
-);
-console.log(userObject === updatedObject2); // true
-```
-For TypeScript users, `pureAssign` has an additional advantage in that it catches type errors
-of the following form, which would be uncaught if using `Object.assign()` or object spread:
-``` javascript
-import pureAssign from "pure-assign";
-
-const userObject = { firstName: "Anastasia", lastName: "Steele" };
-
-const updatedUserObject = pureAssign(userObject, { firstNarm: "Ana" });
-// Type error because "firstNarm" is not a property of userObject.
-```
+This is where `pureAssign()` comes in. By returning the same instance in cases
+where the values haven't changed, `pureAssign` avoids triggering unnecessary
+updates which use object-equality to determine whether the state has changed.
 
 Copyright © 2017 David Philipson

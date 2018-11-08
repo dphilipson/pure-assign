@@ -1,11 +1,9 @@
-# Created by https://www.gitignore.io/api/visualstudiocode
+# OS X
+.DS_Store
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
+# NPM/Yarn
+node_modules
+yarn-debug.log
+yarn-error.log
 
-dist/
-node_modules/
-npm-debug.log
+dist

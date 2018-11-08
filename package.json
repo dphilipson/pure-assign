@@ -1,54 +1,69 @@
 {
-  "name": "pure-assign",
-  "version": "0.1.4",
-  "description": "Drop-in replacement for Object.assign() for \"updating\" immutable objects.",
-  "main": "dist/index.js",
-  "types": "dist/index",
-  "files": [
-    "dist/"
-  ],
-  "scripts": {
-    "clean": "rm -rf dist",
-    "build": "npm run clean && tsc",
-    "jest": "jest",
-    "jest-watch": "npm run jest -- --watch",
-    "lint": "tslint --project .",
-    "prepublish": "npm run build",
-    "test": "npm run lint && npm run jest",
-    "watch": "npm run clean && tsc --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/dphilipson/pure-assign.git"
-  },
-  "keywords": [
-    "object",
-    "assign",
-    "immutable",
-    "update"
-  ],
-  "author": "David Philipson <dphilipson@gmail.com> (http://dphil.me)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dphilipson/pure-assign/issues"
-  },
-  "homepage": "https://github.com/dphilipson/pure-assign#readme",
-  "devDependencies": {
-    "@types/jest": "^16.0.3",
-    "jest": "^18.1.0",
-    "ts-jest": "^18.0.1",
-    "tslint": "4.1.0",
-    "typescript": "^2.1.4"
-  },
-  "jest": {
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    "name": "pure-assign",
+    "version": "0.1.4",
+    "description": "Drop-in replacement for Object.assign() for \"updating\" immutable objects.",
+    "main": "dist/index.js",
+    "types": "dist/index",
+    "files": [
+        "dist/"
+    ],
+    "sideEffects": false,
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/dphilipson/pure-assign.git"
     },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ]
-  }
+    "keywords": [
+        "transducers",
+        "typescript",
+        "functional",
+        "iterators",
+        "lazy",
+        "chain"
+    ],
+    "homepage": "https://github.com/dphilipson/pure-assign",
+    "bugs": {
+        "url": "https://github.com/dphilipson/pure-assign/issues",
+        "email": "david.philipson@gmail.com"
+    },
+    "author": "David Philipson <david.philipson@gmail.com> (http://dphil.me)",
+    "license": "MIT",
+    "scripts": {
+        "build": "yarn run clean && tsc -p tsconfig.build.json",
+        "clean": "rm -rf dist/*",
+        "format-file": "prettier --write",
+        "format": "git ls-files | egrep '\\.(js(on)?|md|scss|tsx?)?$' | xargs yarn run format-file",
+        "jest": "jest",
+        "lint-file": "tslint",
+        "lint": "tslint --project .",
+        "prepublishOnly": "yarn run test && yarn run build",
+        "test": "yarn run lint && tsc && yarn run jest"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "**/*.{js,json,md}": [
+            "yarn run format-file",
+            "git add"
+        ],
+        "**/*.ts": [
+            "yarn run lint-file --fix",
+            "yarn run format-file",
+            "git add"
+        ]
+    },
+    "devDependencies": {
+        "@types/jest": "^23.3.9",
+        "husky": "^1.1.3",
+        "jest": "^23.6.0",
+        "lint-staged": "^8.0.4",
+        "prettier": "^1.15.1",
+        "ts-jest": "^23.10.4",
+        "tslint": "^5.11.0",
+        "tslint-config-prettier": "^1.15.0",
+        "typescript": "^3.1.6"
+    },
+    "dependencies": {}
 }

@@ -1,13 +1,10 @@
 {
-	"extends": "tslint:recommended",
-	"rules": {
-		"interface-name": [
-			true, "never-prefix"
-		],
-		"no-bitwise": false,
-		"object-literal-sort-keys": false,
-		"only-arrow-functions": [
-			false
-		]
-	}
+    "extends": ["tslint:latest", "tslint-config-prettier"],
+    "rules": {
+        "interface-name": [true, "never-prefix"],
+        "max-classes-per-file": false,
+        "no-bitwise": false,
+        "no-this-assignment": [true, { "allow-destructuring": true }],
+        "object-literal-sort-keys": false
+    }
 }

@@ -20,7 +20,7 @@ describe("pureAssign()", () => {
     });
 
     it("should treat a missing key differently from undefined", () => {
-        const object: { a: number, b?: number } = { a: 1 };
+        const object: { a: number; b?: number } = { a: 1 };
         const actual = pureAssign(object, { b: undefined });
         const expected = { a: 1, b: undefined };
         expect(actual).toEqual(expected);
