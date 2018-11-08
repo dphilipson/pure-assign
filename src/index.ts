@@ -18,7 +18,7 @@ export default function pureAssign<T, K extends keyof T>(
     baseObject: T,
     update: Pick<T, K>,
 ): T;
-export default function pureAssign<T, K extends keyof T>(
+export default function pureAssign<T>(
     baseObject: T,
     ...updates: Array<Partial<T>>
 ): T;

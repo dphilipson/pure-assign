@@ -1,7 +1,7 @@
 # Pure Assign
 
 Drop-in replacement for
-[Object.assign()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+[`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 for "updating" immutable objects. Unlike `Object.assign()`, `pureAssign()` will
 not create a new object if no properties change.
 
@@ -24,39 +24,50 @@ npm install pure-assign
 
 ## Usage
 
-`pureAssign` takes one or more arguments. The first argument is a base object,
+`pureAssign()` takes one or more arguments. The first argument is a base object,
 and the remaining arguments are any number of objects whose properties should be
 merged with those of the base object to produce a new object. Unlike
-[`Object.assign`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign),
+[`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign),
 the first argument is not modified. For example:
 
 ```ts
 import pureAssign from "pure-assign";
 
-const person = { firstName: "Anastasia", lastName: "Steele" };
-const updatedPerson = pureAssign(person, { firstName: "Ana" });
-console.log(person); // -> { firstName: "Anastasia", lastName: "Steele" }
-console.log(updatedPerson); // -> { firstName: "Ana", lastName: "Steele" }
+const user = { firstName: "Anastasia", lastName: "Steele" };
+const updatedUser = pureAssign(user, { firstName: "Ana" });
+console.log(user); // -> { firstName: "Anastasia", lastName: "Steele" }
+console.log(updatedUser); // -> { firstName: "Ana", lastName: "Steele" }
 ```
 
 If the resulting object would differ from the original, then a new object is
-created and returned. Otherwise, the original object is returned. That is,
-`pureAssign(object, ...updates)` is equivalent to `Object.assign({}, object, ...updates)`, except that the original instance is returned if no changes would
-be applied. For example:
+created and returned. Otherwise, the original instance is returned. For example:
 
 ```ts
-const person = { firstName: "Anastasia", lastName: "Steele" };
-const updatedPerson = pureAssign(person, { firstName: "Anastasia" });
-console.log(person === updatedPerson); // -> true
+const user = { firstName: "Anastasia", lastName: "Steele" };
+const updatedUser = pureAssign(user, { firstName: "Anastasia" });
+console.log(user === updatedUser); // -> true
 ```
+
+In other words, the following are equivalent:
+
+```ts
+pureAssign(object, ...updates);
+```
+
+```ts
+Object.assign({}, object, ...updates);
+```
+
+except that when using `pureAssign` the original instance is returned if no
+changes would be applied.
 
 For TypeScript users, `pureAssign` has an additional advantage in that it
 catches type errors of the following form, which would be uncaught if using
 `Object.assign()` or object spread:
 
 ```javascript
-const person = { firstName: "Anastasia", lastName: "Steele" };
-const updatedPerson = pureAssign(userObject, { firstNarm: "Ana" });
+const user = { firstName: "Anastasia", lastName: "Steele" };
+const updatedUser = pureAssign(userObject, { firstNarm: "Ana" });
 // Type error because "firstNarm" is not a property of userObject.
 ```
 
@@ -91,12 +102,12 @@ A drawback of this approach is that a new object is created even if the new
 properties are identical to the old ones. This may have performance implications
 if certain updates are triggered by data "changes." For example, React
 developers may attempt to avoid unnecessary re-renders by using
-[PureComponent](https://facebook.github.io/react/docs/react-api.html#react.purecomponent),
-which only performs an update if its props have "changed" according to a
-shallow-equality check. This means that if your updates create new objects with
-the same values, they will trigger unnecessary rerenders since the old props do
-not have object-equality with the new props, despite being functionally
-identical.
+[`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent) or
+[`React.memo()`](https://reactjs.org/docs/react-api.html#reactmemo), which only
+performs an update if its props have "changed" according to a shallow-equality
+check. This means that if your updates create new objects with the same values,
+they will trigger unnecessary rerenders since the old props do not have
+object-equality with the new props, despite being functionally identical.
 
 This is where `pureAssign()` comes in. By returning the same instance in cases
 where the values haven't changed, `pureAssign` avoids triggering unnecessary
