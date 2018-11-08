@@ -29,24 +29,27 @@ describe("pureAssign()", () => {
     });
 
     it("should only apply updates that are own properties", () => {
-        function TestObject() {
+        function TestObject(this: any) {
             this.a = 1;
             this.b = 2;
         }
         TestObject.prototype.c = 3;
-        const actual = pureAssign({ a: 0, b: 0, c: 0 }, new TestObject());
+        const actual = pureAssign(
+            { a: 0, b: 0, c: 0 },
+            new (TestObject as any)(),
+        );
         const expected = { a: 1, b: 2, c: 0 };
         expect(actual).toEqual(expected);
     });
 
     it("should return the original if no updates are own properties", () => {
-        function TestObject() {
+        function TestObject(this: any) {
             this.a = 1;
             this.b = 2;
         }
         TestObject.prototype.c = 3;
         const object = { a: 1, b: 2 };
-        const result = pureAssign(object, new TestObject());
+        const result = pureAssign(object, new (TestObject as any)());
         expect(result).toBe(object);
     });
 

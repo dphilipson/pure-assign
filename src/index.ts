@@ -1,14 +1,27 @@
 /**
- * Drop-in replacement for `Object.assign()` for "updating" immutable objects. Unlike
- * `Object.assign()`, `pureAssign()` will not create a new object if no properties change.
+ * Drop-in replacement for `Object.assign()` for "updating" immutable objects.
+ * Unlike `Object.assign()`, `pureAssign()` will not create a new object if no
+ * properties change.
  *
  * @param baseObject An object which serves as the basis for the updated values.
- * @param updates One or more objects whose values should replace the corresponding values
- *        in `baseObject`. Values in rightward objects take precedence over those in earlier ones.
- * @returns An object whose keys and values match those of `baseObject` except where they have been
- *          overridden by those of `updates`. The input objects are unchanged. If the returned
- *          object would be identical to `baseObject`, then `baseObject` is returned.
+ * @param updates One or more objects whose values should replace the
+ *        corresponding values in `baseObject`. Values in rightward objects take
+ *        precedence over those in earlier ones.
+ * @returns An object whose keys and values match those of `baseObject` except
+ *          where they have been overridden by those of `updates`. The input
+ *          objects are unchanged. If the returned object would be identical to
+ *          `baseObject`, then `baseObject` is returned.
  */
+// This overload prevents pureAssign({ a: 1 }, { a: undefined }) in the common
+// case of one update, which would be allowed if using Partial<T> instead.
+export default function pureAssign<T, K extends keyof T>(
+    baseObject: T,
+    update: Pick<T, K>,
+): T;
+export default function pureAssign<T, K extends keyof T>(
+    baseObject: T,
+    ...updates: Array<Partial<T>>
+): T;
 export default function pureAssign<T>(
     baseObject: T,
     ...updates: Array<Partial<T>>
