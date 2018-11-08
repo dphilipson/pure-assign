@@ -13,12 +13,10 @@
         "url": "git://github.com/dphilipson/pure-assign.git"
     },
     "keywords": [
-        "transducers",
-        "typescript",
-        "functional",
-        "iterators",
-        "lazy",
-        "chain"
+        "object",
+        "assign",
+        "immutable",
+        "update"
     ],
     "homepage": "https://github.com/dphilipson/pure-assign",
     "bugs": {
