@@ -1,6 +1,6 @@
 {
     "name": "pure-assign",
-    "version": "0.1.4",
+    "version": "1.0.0",
     "description": "Drop-in replacement for Object.assign() for \"updating\" immutable objects.",
     "main": "dist/index.js",
     "types": "dist/index",
