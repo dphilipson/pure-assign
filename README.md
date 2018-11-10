@@ -22,7 +22,22 @@ With NPM:
 npm install pure-assign
 ```
 
-## Usage
+## Usage in Brief
+
+```ts
+pureAssign(object, ...updates);
+```
+
+is equivalent to
+
+```ts
+Object.assign({}, object, ...updates);
+```
+
+except that it returns the original instance `object` if the result would have
+the same values as the original.
+
+## Usage in Detail
 
 `pureAssign()` takes one or more arguments. The first argument is a base object,
 and the remaining arguments are any number of objects whose properties should be
@@ -47,19 +62,6 @@ const user = { firstName: "Anastasia", lastName: "Steele" };
 const updatedUser = pureAssign(user, { firstName: "Anastasia" });
 console.log(user === updatedUser); // -> true
 ```
-
-In other words, the following are equivalent:
-
-```ts
-pureAssign(object, ...updates);
-```
-
-```ts
-Object.assign({}, object, ...updates);
-```
-
-except that when using `pureAssign` the original instance is returned if no
-changes would be applied.
 
 For TypeScript users, `pureAssign` has an additional advantage in that it
 catches type errors of the following form, which would be uncaught if using
