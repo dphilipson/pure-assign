@@ -3,7 +3,8 @@
 Drop-in replacement for
 [`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 for "updating" immutable objects. Unlike `Object.assign()`, `pureAssign()` will
-not create a new object if no properties change.
+not mutate the base object, nor will it create a new object if no properties
+change.
 
 [![Build
 Status](https://travis-ci.org/dphilipson/pure-assign.svg?branch=master)](https://travis-ci.org/dphilipson/pure-assign)
@@ -70,7 +71,7 @@ catches type errors of the following form, which would be uncaught if using
 ```javascript
 const user = { firstName: "Anastasia", lastName: "Steele" };
 const updatedUser = pureAssign(userObject, { firstNarm: "Ana" });
-// Type error because "firstNarm" is not a property of userObject.
+// Type error because "firstNarm" is not a property of user.
 ```
 
 ## Motivation
